@@ -20,5 +20,5 @@ Python Programming for Data Science - Part 2
 - Data Analysis with Python: Data Visualization
 - Data Analysis with Python: Advanced Functional Exploratory Data Analysis
 ### Homework and Projects
-- Pandas Exercises (exercises > week_2.2 )
-- Rule-Based Classification (exercises > week_2.3 )
+- Pandas Exercises (exercises > week_2.2.py)
+- Rule-Based Classification (exercises > week_2.3.py )
