@@ -8,5 +8,5 @@
 - Loops
 - Comprehensions
 ### Homework
-- Virtual Environment creation
-- Python Exercises
+- Virtual Environment creation (exercise > week_1.py)
+- Python Exercises. (exercise > week_1.py)
