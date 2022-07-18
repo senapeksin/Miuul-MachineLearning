@@ -22,3 +22,16 @@ Python Programming for Data Science - Part 2
 ### Homework and Projects
 - Pandas Exercises (exercises > week_2.2.py)
 - Rule-Based Classification (exercises > week_2.3.py )
+
+![](../../Desktop/Ekran görüntüsü 2022-07-19 021238.png)
+
+## Week - 3
+Feature Engineering
+### Topics
+- Outliers
+- Missing Values
+- Encoding Scaling
+- Feature Extraction
+### Homework and Projects
+- Diabetes Data Feature Engineering
+- Telco Customer Abandoned Feature Engineering
