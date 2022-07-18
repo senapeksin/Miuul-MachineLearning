@@ -100,8 +100,25 @@ df["total_bill_tip_sum"] = df["total_bill"] + df["tip"]
 # Görev 23: Total_bill değişkeninin kadın ve erkek için ayrı ayrı ortalamasını bulunuz. Bulduğunuz ortalamaların altında olanlara 0, üstünde ve eşit olanlara 1 verildiği yeni bir total_bill_flag değişkeni oluşturunuz.
 # Kadınlar için Female olanlarının ortalamaları, erkekler için ise Male olanların ortalamaları dikkate alınacktır. Parametre olarak cinsiyet ve total_bill alan bir fonksiyon yazarak başlayınız. (If-else koşulları içerecek)
 
+female = df.groupby("sex").total_bill.mean()[0]
+male = df.groupby("sex").total_bill.mean()[1]
 
+
+def total_bill_flag(gender, total_bill):
+    if gender == "Female" and total_bill < female:
+        return 0
+    elif gender == "Female" and total_bill >= female:
+        return 1
+    elif gender == "Male" and total_bill < male:
+        return 0
+    elif gender == "Male" and total_bill >= male:
+        return 1
+
+df["total_bill_flag"] = df.apply(lambda x: total_bill_flag(x.sex, x.total_bill), axis=1)
+print(df.head())
 
 # Görev 24 : total_bill_flag değişkenini kullanarak cinsiyetlere göre ortalamanın altında ve üstünde olanların sayısını gözlemleyiniz.
-
+df.groupby(["sex", "total_bill_flag"]).total_bill_flag.count()
 # Görev 25 :Veriyi total_bill_tip_sum değişkenine göre büyükten küçüğe sıralayınız ve ilk 30 kişiyi yeni bir dataframe'e atayınız.
+df= df.sort_values("total_bill_tip_sum",ascending=False)
+df.head(30)
