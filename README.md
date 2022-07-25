@@ -24,7 +24,7 @@ Python Programming for Data Science - Part 2
 - Rule-Based Classification (exercises > week_2.3.py)
 
 ## Week - 3
-Feature Engineering deneme
+Feature Engineering 
 ### Topics
 - Outliers
 - Missing Values
