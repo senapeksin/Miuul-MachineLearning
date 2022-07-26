@@ -34,7 +34,7 @@ Feature Engineering
 - Diabetes Data Feature Engineering (Feature_Engineering > projects > Diabetes_Feature_Engineering.ipynb)
 - Telco Customer Abandoned Feature Engineering (Feature_Engineering  > projects >)
 ## Week - 4
-Machine Learning Part 1 
+Machine Learning  
 ### Topics
 - Basic concepts
 - Linear Regression
