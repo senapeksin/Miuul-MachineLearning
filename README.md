@@ -9,10 +9,10 @@ Python Programming for Data Science - Part 1
 - Loops
 - Comprehensions
 ### Homework
-- Virtual Environment creation (exercises > week_1.py)
-- Python Exercises. (exercises > week_1.py)
+- Virtual Environment creation  
+- Python Exercises ( Python_Programming > exercises > week_1.py)
 
-## Week - 2 
+## Week - 2
 Python Programming for Data Science - Part 2
 ### Topics
 - Data Analysis with Python: Numpy
@@ -20,8 +20,8 @@ Python Programming for Data Science - Part 2
 - Data Analysis with Python: Data Visualization
 - Data Analysis with Python: Advanced Functional Exploratory Data Analysis
 ### Homework and Projects
-- Pandas Exercises (exercises > week_2.2.py)
-- Rule-Based Classification (exercises > week_2.3.py)
+- Pandas Exercises ( Python_Programming > exercises > week_2.2.py)
+- Rule-Based Classification (Python_Programming > exercises > week_2.3.py)
 
 ## Week - 3
 Feature Engineering 
