@@ -35,3 +35,17 @@ Feature Engineering
 - Telco Customer Abandoned Feature Engineering (projects >)
 ## Week - 4
 Machine Learning Part 1 
+### Topics
+- Basic concepts
+- Linear Regression
+- Logistic Regression
+- KNN
+- CART
+- Advanced Tree Methods
+- Unsupervised Learning
+- Machine Learning Pipeline
+###  Homework and Projects:
+- Creating a Salary Forecast Model
+- Creating a House Price Prediction Model
+- Creating a Telco Customer Abandonment Model
+- Customer Segmentation with Unsupervised Learning
