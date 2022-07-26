@@ -31,8 +31,8 @@ Feature Engineering
 - Encoding Scaling
 - Feature Extraction
 ### Homework and Projects
-- Diabetes Data Feature Engineering (projects > Diabetes_Feature_Engineering.ipynb)
-- Telco Customer Abandoned Feature Engineering (projects >)
+- Diabetes Data Feature Engineering (Feature_Engineering > projects > Diabetes_Feature_Engineering.ipynb)
+- Telco Customer Abandoned Feature Engineering (Feature_Engineering  > projects >)
 ## Week - 4
 Machine Learning Part 1 
 ### Topics
