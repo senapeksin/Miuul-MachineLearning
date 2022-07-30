@@ -38,12 +38,12 @@ Feature Engineering
 - Feature Extraction
 ### Homework and Projects
 - Diabetes Data Feature Engineering (Feature_Engineering > projects > Diabetes_Feature_Engineering.ipynb)
-- Telco Customer Abandoned Feature Engineering (Feature_Engineering  > projects >)
+- Telco Customer Abandoned Feature Engineering (Feature_Engineering  > projects > Telco_Customer_Churn_Feature_Engineering.ipynb )
 ## Week - 4
 Machine Learning  
 ### Topics
 - Basic concepts
-- Linear Regression
+- Linear Regression  (Project : Sales Prediction with Linear Regression)
 - Logistic Regression
 - KNN
 - CART
