@@ -51,19 +51,21 @@ def outlier_thresholds(dataframe, col_name, q1=0.05, q3=0.95):
     interquantile_range = quartile3 - quartile1
     up_limit = quartile3 + 1.5 * interquantile_range
     low_limit = quartile1 - 1.5 * interquantile_range
-    return low_limit, up_limit
+    return low_limit, up_limit   #eşik değerleri hesaplama fonksiyonu
 
 def check_outlier(dataframe, col_name):
     low_limit, up_limit = outlier_thresholds(dataframe, col_name)
     if dataframe[(dataframe[col_name] > up_limit) | (dataframe[col_name] < low_limit)].any(axis=None):
         return True
     else:
-        return False
+        return False #eşik değerleri hesapladıktan sonra bir değişkende aykırı değer var mı sorusunu sormak için diğer fonksiyon
 
-def replace_with_thresholds(dataframe, variable):
+def replace_with_thresholds(dataframe, variable):  # hesaplanan eşik değerleri kullanarak bir değişkende
+    # eğer aykırı değer varsa bu aykırı değerleri silme,ama hesaplanan eşik değeler ile değiştir görevini gören fonksiyon
     low_limit, up_limit = outlier_thresholds(dataframe, variable)
     dataframe.loc[(dataframe[variable] < low_limit), variable] = low_limit
     dataframe.loc[(dataframe[variable] > up_limit), variable] = up_limit
+
 
 
 pd.set_option('display.max_columns', None)
@@ -76,8 +78,9 @@ pd.set_option('display.width', 500)
 # Exploratory Data Analysis
 ######################################################
 
-df = pd.read_csv("datasets/diabetes.csv")
-
+df = pd.read_csv("Machine_Learning/datasets/diabetes.csv")
+df.head()
+df.shape
 ##########################
 # Target'ın Analizi
 ##########################
@@ -87,14 +90,15 @@ df["Outcome"].value_counts()
 sns.countplot(x="Outcome", data=df)
 plt.show()
 
-100 * df["Outcome"].value_counts() / len(df)
+100 * df["Outcome"].value_counts() / len(df)  # 1  VE 0 SINIFININ ORANI
 
 ##########################
 # Feature'ların Analizi
 ##########################
+df.describe().T  # sadece sayısal değişkenleri getirir ve durumlarını özetler
 
 df.head()
-
+# görsel yöntemlerle özetleyelim
 df["BloodPressure"].hist(bins=20)
 plt.xlabel("BloodPressure")
 plt.show()
@@ -109,7 +113,7 @@ for col in df.columns:
     plot_numerical_col(df, col)
 
 cols = [col for col in df.columns if "Outcome" not in col]
-
+cols
 
 # for col in cols:
 #     plot_numerical_col(df, col)
@@ -145,6 +149,16 @@ for col in cols:
 
 replace_with_thresholds(df, "Insulin")
 
+# Değişkenleri scale etmek , yani ölcütlendirelim.
+# Doğrusal ve uzaklık temelli yöntemlerde ve gradient descent kullanan yöntemlerde genellikle standartlaştırma işlemleri oldukca önem taşır.
+# Standartlaştırma işlemlerinin 2 temel amacı : 1- modellerin değişkenlere eşit yaklaşmasını sağlamak
+# 2- kullanılan parametre tahmin yöntemlerinin daha hızlı ve  daha doğru tahminlerde bulunması için ökçeklendirme işlemlerini kullanırız.
+
+
+# robust scaler 'ın standart scaler'dan farkı daha robust. Yani aykırı değerlerden etkilenmiyor olmasıdır.
+# aykırı değerlere dayanıklı. Her bir gözlem biriminden medyanı cıkarır.Medyan aykırı değerlere duyarsızdır.
+# Medyanı cıkardıktan sonra range değerine bölüyor.
+
 for col in cols:
     df[col] = RobustScaler().fit_transform(df[[col]])
 
@@ -171,57 +185,20 @@ y_pred[0:10]
 y[0:10]
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ######################################################
 # Model & Prediction
-######################################################
-
-y = df["Outcome"]
-
-X = df.drop(["Outcome"], axis=1)
-
-log_model = LogisticRegression().fit(X, y)
-log_model.intercept_
-log_model.coef_
-
-y_pred = log_model.predict(X)
-y_pred[0:10]
-
-y[0:10]
-
-
-
-
-
+#####################################################
 
 
 
 ######################################################
 # Model Evaluation
 ######################################################
+
+#accuracy : doğru sınıflandırma oranı
+#precision : 1 olarak yaptıgımız tahminler  ne kadar başarılı
+#recall : 1 olanları ne kadar başarılı thmin etmişiz
+#f1 skor : bunların üzerinden harmonik ortalama ile f1 skor hesaplanıyordur..
 
 def plot_confusion_matrix(y, y_pred):
     acc = round(accuracy_score(y, y_pred), 2)
@@ -242,7 +219,7 @@ print(classification_report(y, y_pred))
 # Recall: 0.58
 # F1-score: 0.65
 
-# ROC AUC
+# ROC AUC : farklı classification threshold degerlerine göre oluşacabilecek başarılarımıza yönelik  geenel bir metrik.
 y_prob = log_model.predict_proba(X)[:, 1]
 roc_auc_score(y, y_prob)
 # 0.83939
@@ -259,7 +236,8 @@ X_train, X_test, y_train, y_test = train_test_split(X,
 log_model = LogisticRegression().fit(X_train, y_train)
 
 y_pred = log_model.predict(X_test)
-y_prob = log_model.predict_proba(X_test)[:, 1]
+
+y_prob = log_model.predict_proba(X_test)[:, 1]  # 1 sınıfına ait olma olaşılıgı
 
 print(classification_report(y_test, y_pred))
 
