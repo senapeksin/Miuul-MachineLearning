@@ -329,13 +329,14 @@ cart_final.get_params()
 ################################################
 # 9. Extracting Decision Rules
 ################################################
-
+# karar kuralları :
 tree_rules = export_text(cart_final, feature_names=list(X.columns))
 print(tree_rules)
 
 
 ################################################
 # 10. Extracting Python Codes of Decision Rules
+# Karar Kurallarının Python Kodlarını Çıkartma
 ################################################
 
 # sklearn '0.23.1' versiyonu ile yapılabilir.
@@ -351,6 +352,7 @@ print(skompile(cart_final.predict).to('excel'))
 ################################################
 # 11. Prediction using Python Codes
 ################################################
+# return ' e az önceki cıktıyı verdik.
 
 def predict_with_rules(x):
     return ((((((0 if x[6] <= 0.671999990940094 else 1 if x[6] <= 0.6864999830722809 else
