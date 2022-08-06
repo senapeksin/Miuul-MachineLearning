@@ -114,10 +114,11 @@ val_curve_params(rf_final, X, y, "max_depth", range(1, 11), scoring="roc_auc")
 ################################################
 # GBM
 ################################################
-
 gbm_model = GradientBoostingClassifier(random_state=17)
 
 gbm_model.get_params()
+
+#hyperparameter optimizasyonu yapmadan önce model hatalarımız:
 
 cv_results = cross_validate(gbm_model, X, y, cv=5, scoring=["accuracy", "f1", "roc_auc"])
 cv_results['test_accuracy'].mean()
@@ -162,7 +163,7 @@ cv_results['test_roc_auc'].mean()
 xgboost_params = {"learning_rate": [0.1, 0.01],
                   "max_depth": [5, 8],
                   "n_estimators": [100, 500, 1000],
-                  "colsample_bytree": [0.7, 1]}
+                  "colsample_bytree": [0.7, 1]}  # değişkenlerden alınacak olan gözlem sayısı ile ilgili parametre, ön tanımı 1
 
 xgboost_best_grid = GridSearchCV(xgboost_model, xgboost_params, cv=5, n_jobs=-1, verbose=True).fit(X, y)
 
@@ -247,7 +248,7 @@ cv_results['test_f1'].mean()
 cv_results['test_roc_auc'].mean()
 
 
-catboost_params = {"iterations": [200, 500],
+catboost_params = {"iterations": [200, 500],  # ağaç sayısıdır, boosting sayısıdır.
                    "learning_rate": [0.01, 0.1],
                    "depth": [3, 6]}
 
