@@ -55,3 +55,5 @@ Machine Learning
 - Creating a House Price Prediction Model
 - Creating a Telco Customer Abandonment Model
 - Customer Segmentation with Unsupervised Learning
+
+to access the lecture notes =>  Introduction_to_Machine_Learning Notes.pdf 
