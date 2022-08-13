@@ -5,7 +5,7 @@
 import joblib
 import pandas as pd
 
-df = pd.read_csv("datasets/diabetes.csv")
+df = pd.read_csv("Machine_Learning/datasets/diabetes.csv")
 
 random_user = df.sample(1, random_state=45)
 
