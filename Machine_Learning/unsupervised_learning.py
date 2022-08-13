@@ -162,6 +162,8 @@ plt.show()
 # Kume Sayısını Belirlemek
 ################################
 
+# Dendogram üzerinden bir bilgi aldık. Küme sayısını belirlemede çizgi atma işini de işin içine katalım.
+# Bunun için axhline metodunu kullanıyoruz.
 
 plt.figure(figsize=(7, 5))
 plt.title("Dendrograms")
@@ -174,13 +176,14 @@ plt.show()
 # Final Modeli Oluşturmak
 ################################
 
-from sklearn.cluster import AgglomerativeClustering
+from sklearn.cluster import AgglomerativeClustering  # birleştirici clustering metodunu import ediyoruz.
 
 cluster = AgglomerativeClustering(n_clusters=5, linkage="average")
+# cluster yapısını ortaya cıkaracak olan ilgili metodu kullandık.
 
 clusters = cluster.fit_predict(df)
 
-df = pd.read_csv("datasets/USArrests.csv", index_col=0)
+df = pd.read_csv("Machine_Learning/datasets/USArrests.csv", index_col=0)
 df["hi_cluster_no"] = clusters
 
 df["hi_cluster_no"] = df["hi_cluster_no"] + 1
@@ -193,29 +196,63 @@ df["kmeans_cluster_no"] = clusters_kmeans
 # Principal Component Analysis
 ################################
 
-df = pd.read_csv("datasets/Hitters.csv")
+df = pd.read_csv("Machine_Learning/datasets/hitters.csv")
 df.head()
 
-num_cols = [col for col in df.columns if df[col].dtypes != "O" and "Salary" not in col]
+num_cols = [col for col in df.columns if df[col].dtypes != "O" and "Salary" not in col]  # sayısal değişkenleri ve bağımsız değişkenleri aldık.
 
 df[num_cols].head()
 
-df = df[num_cols]
+df = df[num_cols]  # dataframe'den ucurmak
 df.dropna(inplace=True)
 df.shape
 
+# şu anda bağımlı değişken yok. Çeşitli değerler var elimde. değişken değerleri.
+# Örnek olması acısından kendime bir veri seti oluşturdum.
+# Amacım bu çok değişkenli verinin daha az değişken ile ifade edilmesi .
+# burada 16 tane değişken var ya ben bu verisetini 2 veya 3  bileşene indirgemeye çalışıcam.
+
+# Bu yöntem yine standartlaştırma ihtiyacı duydugumuz bir yöntem.
+
 df = StandardScaler().fit_transform(df)
+df
 
 pca = PCA()
 pca_fit = pca.fit_transform(df)
 
-pca.explained_variance_ratio_
-np.cumsum(pca.explained_variance_ratio_)
+# temel bileşen analizini uyguladık.
+# Şimdi bu bileşenler oluştugunda bileşenlerin başarısını yani yeni değişkenler aslında bunlar ön tanımlı değeri ile oluşturduk.
+# Bu bileşenlerin başarısı nasıl değerlendirilecek?
+# Bu bileşenlerin başarısı bileşenlerin açıkladıgı varyans oranlarına göre  belirlenmektedir.
+# DİKKAT ! Temel bileşen analizinin amacı neydi ?
+# Verisetindeki değişkenliğin verisetindeki bilginin daha az sayıdaki bileşen ile açıklanması idi.
+# Bunu yaparken ne oluyordu? Belirli miktarda bir bilgi kaybı oluyordu. Bilgi = varyanstır.
+# Dolayısıyla bu bileşenlerin başarısını değerlendirebileceğimiz metrik  açıkladıkların varyans oranıdır.
 
+pca.explained_variance_ratio_   #bileşenlerin açıkladıkların varyans oranları bilgisi gelecek. Bu ne demek ? Açıkladıkları bilgi oranı demek
+np.cumsum(pca.explained_variance_ratio_)  # kümülatif varyansları hesapladık. Yani peş peşe 2 bileşenin açıklayacak oldugu varyans nedir vs şeklinde gözlem yaptıgımızı düşünelim.
+
+
+# ne yaptık ?
+# pca.explained_variance_ratio_ => burada elde ettiklerimiz pca'nın oluşturdugu 16 adet yeni bileşenin hepsinin açıkladıgı varyans oranı
+# sonra bunun kümülatifini alıyorum ki bu bileşenler bir araya geldiğinde toplam ne kadar açıklama oranına sahip
+# dolayısıyla mesela birinci değişken (0.46037855) verisetinin içindeki bilginin neredeyse yarısını tek basına açıklıyor.
+# bir bileşen daha koydugumuzd akümülatif olarak yani 46'nın üstüne bir değer eklediğimizde 72 gelmiş.
+# 3. bileşen 4. bileşen  5. bileşene geldiğimizde verinin içinde bulunan bilginin (varyansın) yüzde 91'inin açıklandıgını görüyoruz.
+# iyi de hani şey demiştik sanki ? Daha az sayıda bileşendi hani ? Evet öyle demiştik gelicez yavas yavas.
+# PCA 'yı ön tanımlı değeri ile kullandık bütün değerlere bir baktık sadece.
+# Dolayısıyla aslında buradan da neye karar vermemiz gerektiğine ilişkin bir bilgiyi edindik aslında
+# Mesela şöyle bir karar: Ben zaten 3 bileşen kullandıgımda mevcut değişkenliğin %82 'sini açıklayabiliyorum
+# o zaman  bu veri setini 3 bileşene indirgeyebilirim şeklinde karar veriyor olacağız.
+
+# Şimdi bu bileşen sayısına nasıl karar vereceğimizi değerlendirelim.
 
 ################################
 # Optimum Bileşen Sayısı
 ################################
+
+# Yine elbow yöntemi. Bu yöntem ile neyi inceleyebiliyorduk ?
+# En keskin geçisin en kayda değer değişikliğin nerede oldugunu inceliyorduk.
 
 pca = PCA().fit(df)
 plt.plot(np.cumsum(pca.explained_variance_ratio_))
@@ -223,22 +260,24 @@ plt.xlabel("Bileşen Sayısını")
 plt.ylabel("Kümülatif Varyans Oranı")
 plt.show()
 
+# Bu grafik incelendiğinde 2 3 gibi bir değer tercih edilebilir.
+
 ################################
 # Final PCA'in Oluşturulması
 ################################
 
-pca = PCA(n_components=3)
+pca = PCA(n_components=3)  # bileşen sayısını 3 seçerek final modeli oluşturuyorum.
 pca_fit = pca.fit_transform(df)
 
 pca.explained_variance_ratio_
-np.cumsum(pca.explained_variance_ratio_)
+np.cumsum(pca.explained_variance_ratio_)  # kümülatif toplamını alırsak, bu 3 bileşenin toplam ne kadar bilgi açıkladıgını buluyoruz.
 
 
 ################################
 # BONUS: Principal Component Regression
 ################################
 
-df = pd.read_csv("datasets/Hitters.csv")
+df = pd.read_csv("Machine_Learning/datasets/Hitters.csv")
 df.shape
 
 len(pca_fit)
