@@ -274,52 +274,98 @@ np.cumsum(pca.explained_variance_ratio_)  # kümülatif toplamını alırsak, bu
 
 
 ################################
-# BONUS: Principal Component Regression
+# BONUS: Principal Component Regression (Temel Bileşen Regresyon Modeli) PCR
 ################################
 
-df = pd.read_csv("Machine_Learning/datasets/Hitters.csv")
+# Bileşenleri çıkardık ama bunları şimdi nereye koyacağız. Ne anlama geliyor? soruları olabilir.
+# Diyelimki Hitters veri seti doğrusal bir model ile modellenmek istiyor
+# ve değişkenler arasında coklu  doğrusal bağlantı problemi var.
+# Bu doğrusal regresyon modellerinde sağlanması gereken varsayımlardandır.
+# Değişkenler arasında  yüksek korelasyon oldugunda bu çeşitli problemlere sebep olur. Bunu istemiyoruz
+
+# Diyelim ki böyle bir problemimiz var.İfade ettiğimiz gibi PCR başka amaçlarla kullanılan bir araçtır.
+# Şimdi böyle bir amacımız oldugunu düşünelim
+
+# Birincisi bu amacımızı yerine getiricez.
+# İkincisi yukarda cıkarmıs oldugumuz bileşenlerin neye karsılık  geldiğini anlamaya çalışıcaz.
+
+df = pd.read_csv("Machine_Learning/datasets/hitters.csv")
 df.shape
+# 322 tane gözlem birimi var, pca_fit içeresinde kaç tane gözlem vardı? bundada 322 tane gözlem birimi var.
 
 len(pca_fit)
 
+# Anlıyorum ki, gözlem birimlerim aynı yerinde şu an. Ama burada ne vardı?  burada 3 tane bileşen vardı.(pca_fit için)
+# diğerinde ne var daha fazla değişken var.Anlıyorum ki gözlem birimlerim yerinde.
+
+
+
 num_cols = [col for col in df.columns if df[col].dtypes != "O" and "Salary" not in col]
-len(num_cols)
+len(num_cols)  # 16 tane numeric değişken var. Biz ne yapmıstık bu 16 tane değişkeni 3 tane bileşene indirgemiştik
 
-others = [col for col in df.columns if col not in num_cols]
+others = [col for col in df.columns if col not in num_cols] # num_cols' dısında kalan değişkenleri getir diyorum.
+others #  ['League', 'Division', 'Salary', 'NewLeague']   , Bunlar da diğer değişkenler
 
-pd.DataFrame(pca_fit, columns=["PC1","PC2","PC3"]).head()
-
+pd.DataFrame(pca_fit, columns=["PC1","PC2","PC3"]).head() # 3 bileşenli olan pca_fit değişkenlerini dataframe e çeviriyorum ve isimlerndirmelerini yapıyorum.
+# 3 tane yeni değişken bu. Diğer değişkenlere de bakalım
 df[others].head()
 
-final_df = pd.concat([pd.DataFrame(pca_fit, columns=["PC1","PC2","PC3"]),
-                      df[others]], axis=1)
-final_df.head()
+# Buradan ne anlıyoruz? Daha öncesinde 16 tane sayısal değişkenim vardı.
+# Bunları ben 3 bileşene indirgedim.E bunun yanında bir de işte bu verisetindeki bağımlı değişken var ve kategorik değişkenler var
+# ne yapıcam ? problemimiz şu: pcr denilen bir makine öğrenmesi yöntemi var. Bu yöntem şöyle çalışıyor
+# Önce bir temel bileşen analizi yöntemi uygulanıp değişkenlerin boyutu  indirgeniyor.
+# Daha sonrasında bu bileşenlerin üzerine bir regresyon modeli kuruluyor.
 
+# Direk bunu yapan bir python kodu yok. İstatistik literatüründe var olan bir konu kendim uyarlayacağım.
+# MAdem sayısal değişkenleri seçersem ve onları bileşenlerce ifade edebilirsem e bunun üzerine bir regresyon modeli kurarım,
+# bu değişken gibi zaten ya dolayısıyla regresyon modelinin sonucunu elde edebilirim.
+# bileşenleri değişken olarak kullanabiliyoruz.  Sonuclara baktıgımızda tutarlı olması  durumunda doğru yoldayız diyebilirim.
+
+# Madem bileşenleri indirgeme işi tammalndı. O zaman bu iki veri setini bir araya getirelim.
+
+final_df = pd.concat([pd.DataFrame(pca_fit, columns=["PC1","PC2","PC3"]),
+                      df[others]], axis=1) # axis =1 yani yan yana koy.
+final_df.head()
+# Burada 16 tane değişken vardı su anda 3 tane var. Ama ? Aması yok boyut indirgedim.
+# Artık o 16 değişkenin taşıdıgı bilginin yüzde 82 si bu değişkenlerce taşınıyor ve burada bir problemimiz oldugunu varsaydık.
+# Çoklu doğrusal bağlantı problemi. Bağımsız değişkenlerin birbiri ile yüksek korelasyonlu olması problemi
+# buradaki bileşenler korelasyonsuz. ( PC1       PC2       PC3) kırdık korelasyonu.
 
 from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
+
+# final df var. Model kurmak isitiyorum ama bir problemim var .Buradaki  Kategorik değişkenler.
+# bu kategorik değişknelerin hepsinin sınıf değişkeni 2 oldugu için bunları dilersek direkt label encoder dan geçirebiliriz
+# yada dummys kullanabiliriz.
 
 def label_encoder(dataframe, binary_col):
     labelencoder = LabelEncoder()
     dataframe[binary_col] = labelencoder.fit_transform(dataframe[binary_col])
     return dataframe
 
-for col in ["NewLeague", "Division", "League"]:
+for col in ["NewLeague", "Division", "League"]:  # 3 tane kategorik değişken var, sınıf sayılarının 2 oldugunu bilyorum. Ondan label encoden kullanıyorum
     label_encoder(final_df, col)
-
-final_df.dropna(inplace=True)
+final_df.head()
+final_df.dropna(inplace=True) # nan değerleri siliyoruz.
 
 y = final_df["Salary"]
 X = final_df.drop(["Salary"], axis=1)
 
-lm = LinearRegression()
+lm = LinearRegression()  # daha sonra kullanmak derdim olmadıgı için fit etme işlemi yapmıyorum direkt hatasına bakıcam cross_val_score yöntemi ile
 rmse = np.mean(np.sqrt(-cross_val_score(lm, X, y, cv=5, scoring="neg_mean_squared_error")))
-y.mean()
+rmse  #  345.6021106351967
+# doğru yolda mıyız yanlış yolda mıyız ? nasıl karar veriyorduk buna
+# y bağımlı değişkenin bir ortalamasını alalım.
+y.mean() # 535.9258821292775
+#iyi mi değil, çok mu kötü değil
 
+# DecisionTreeRegressor da yapalım
 
 cart = DecisionTreeRegressor()
 rmse = np.mean(np.sqrt(-cross_val_score(cart, X, y, cv=5, scoring="neg_mean_squared_error")))
+rmse # 371.8732139505637  (daha kötü çıktı)
 
+# hyperparametre optimizasyonu yapalım
 cart_params = {'max_depth': range(1, 11),
                "min_samples_split": range(2, 20)}
 
@@ -333,10 +379,15 @@ cart_best_grid = GridSearchCV(cart,
 cart_final = DecisionTreeRegressor(**cart_best_grid.best_params_, random_state=17).fit(X, y)
 
 rmse = np.mean(np.sqrt(-cross_val_score(cart_final, X, y, cv=5, scoring="neg_mean_squared_error")))
+rmse  # 330 a düştü verdiğimiz arama seti ile .
+
+# SORU: Elimde bir veri seti var ama verisetinde label yok, sınıflandırma problemi çözmek istiyorum. Ne yapabilirim?
+# önce unsupervised yöntemi ile çeşitli cluster'lar çıkarırım. Daha sonra bu cıkardıgım clusterlar = sınıflar diye düşünürüm.
+# Etikletlerim onları sonra bunları sınıflandırıcıya asokarım
 
 
 ################################
-# BONUS: PCA ile Çok Boyutlu Veriyi 2 Boyutta Görselleştirme
+# BONUS: PCA ile Çok Boyutlu Veriyi 2 Boyutta Görselleştirme  / PCA Görselleştirme
 ################################
 
 ################################
@@ -346,11 +397,19 @@ rmse = np.mean(np.sqrt(-cross_val_score(cart_final, X, y, cv=5, scoring="neg_mea
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 500)
 
-df = pd.read_csv("datasets/breast_cancer.csv")
+df = pd.read_csv("Machine_Learning/datasets/breast_cancer.csv")
 
 y = df["diagnosis"]
 X = df.drop(["diagnosis", "id"], axis=1)
 
+# amacımız şu olsun; bu cok değişkenli veriyi 2 eksen üzerinde görselleştirmek isteyelim.
+# Bunu cok fazla değişken oldugundan dolayı yapmak mümkün değil
+# Öyle bir işlem yapmam lazım ki bunu 2 boyutta görselleştirebiliyor olayım
+
+# Önce veri setini 2 boyuta indirgememiz lazım, sonra da görselleştirmemiz lazım
+# birinci işimiz için fonksiyonumuzda, önce bağımsız değişkenleri standartlaştıracak daha sonra PCA  hesabı yapacak
+# değişken değerlerini dönüştürmüş olacak yani bileşenleri çıkarmıs olacak
+# bu bileşenleri bir dataframe e çevirdikten sonra bağımlı değişken ile yan yana concat ederek dısarıya verecek.
 
 def create_pca_df(X, y):
     X = StandardScaler().fit_transform(X)
@@ -361,6 +420,10 @@ def create_pca_df(X, y):
     return final_df
 
 pca_df = create_pca_df(X, y)
+pca_df  #2 değişkene indirgendi
+
+df.shape # 32 tane değişen vardı, bir tanesi bağımlı değişken diğeri ıd
+pca_df.shape # 3 tane kaldı , biri bağımlı değişken yani 2 tane bileşen olmus oldu
 
 def plot_pca(dataframe, target):
     fig = plt.figure(figsize=(7, 5))
@@ -381,6 +444,7 @@ def plot_pca(dataframe, target):
 
 plot_pca(pca_df, "diagnosis")
 
+#başka bir veri setinde de yapalım
 
 ################################
 # Iris
@@ -390,7 +454,10 @@ import seaborn as sns
 df = sns.load_dataset("iris")
 
 y = df["species"]
-X = df.drop(["species"], axis=1)
+X = df.drop(["species"], axis=1) # kategorik değişken olmaması lazım
+
+# pca dataframe olusturma fonksiyonu ve pca görselleştirme fonksiyonunu her ihtiyacımızda kullanabiliriz.
+# Sadece bu fonksiyonlara göndereceğimiz X 'in sayısal değişkenlerden oluşması lazımdır.
 
 pca_df = create_pca_df(X, y)
 
@@ -401,10 +468,10 @@ plot_pca(pca_df, "species")
 # Diabetes
 ################################
 
-df = pd.read_csv("datasets/diabetes.csv")
+df = pd.read_csv("Machine_Learning/datasets/diabetes.csv")
 
 y = df["Outcome"]
-X = df.drop(["Outcome"], axis=1)
+X = df.drop(["Outcome"], axis=1)  #
 
 pca_df = create_pca_df(X, y)
 
