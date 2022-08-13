@@ -230,6 +230,8 @@ def main():
     joblib.dump(voting_clf, "voting_clf.pkl")
     return voting_clf
 
+# Bir python scriptini işletim sistemi seviyesinden komut sistemi seviyesinden run etmek istediğimizde böyle bir blok ekleriz.
+
 if __name__ == "__main__":
     print("İşlem başladı")
     main()
