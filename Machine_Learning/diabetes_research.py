@@ -143,8 +143,7 @@ def grab_col_names(dataframe, cat_th=10, car_th=20):
     # print(f'num_but_cat: {len(num_but_cat)}')
     return cat_cols, num_cols, cat_but_car
 
-df = pd.read_csv("datasets/diabetes.csv")
-
+df = pd.read_csv("Machine_Learning/datasets/diabetes.csv")
 check_df(df)
 
 
@@ -172,7 +171,7 @@ for col in num_cols:
 ################################################
 # 2. Data Preprocessing & Feature Engineering
 ################################################
-
+# kendisine girilen bir değişkenin alt ve üst eşik değerlerini hesaplamak
 def outlier_thresholds(dataframe, col_name, q1=0.25, q3=0.75):
     quartile1 = dataframe[col_name].quantile(q1)
     quartile3 = dataframe[col_name].quantile(q3)
@@ -181,6 +180,7 @@ def outlier_thresholds(dataframe, col_name, q1=0.25, q3=0.75):
     low_limit = quartile1 - 1.5 * interquantile_range
     return low_limit, up_limit
 
+# aykırı değer barındıran bir değişkenin bu aykırı değerini gönder , yerine bu threshold değerini koy diyebiliriz.
 def replace_with_thresholds(dataframe, variable):
     low_limit, up_limit = outlier_thresholds(dataframe, variable)
     dataframe.loc[(dataframe[variable] < low_limit), variable] = low_limit
@@ -296,7 +296,7 @@ def diabetes_data_prep(dataframe):
 
     return X, y
 
-df = pd.read_csv("datasets/diabetes.csv")
+df = pd.read_csv("Machine_Learning/datasets/diabetes.csv")
 
 check_df(df)
 
@@ -383,6 +383,10 @@ best_models = hyperparameter_optimization(X, y)
 ######################################################
 # 5. Stacking & Ensemble Learning
 ######################################################
+# Temeli, birden fazka modeli birarada kullanmaya dayanmaktadır.
+
+# Bir algorimanın knedi içindeki çalışma prensibi yerine birden fazla algoritmanın bir araya gelerek yapması işlemlerine
+# Stacking learning, Ensemble Learning denir.
 
 def voting_classifier(best_models, X, y):
     print("Voting Classifier...")
@@ -409,9 +413,9 @@ X.columns
 random_user = X.sample(1, random_state=45)
 voting_clf.predict(random_user)
 
-joblib.dump(voting_clf, "voting_clf2.pkl")
+joblib.dump(voting_clf, "voting_clf2.pkl")   #modeli kaydetmek istiyorsak kullanırız.
 
-new_model = joblib.load("voting_clf2.pkl")
+new_model = joblib.load("voting_clf2.pkl")  #çalışıp çalışmadıgını gözlemlemek
 new_model.predict(random_user)
 
 

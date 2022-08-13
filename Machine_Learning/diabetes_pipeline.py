@@ -17,6 +17,8 @@ from xgboost import XGBClassifier
 ################################################
 # Helper Functions
 ################################################
+# Eğer utils ve helpers diye başka python dosyasında metotlarımızı bulundursaydık ve bu dosyaları çağırmak isteseydik;
+# from helpers import * diyerek import ederdik.
 
 # utils.py
 # helpers.py
@@ -220,7 +222,7 @@ def voting_classifier(best_models, X, y):
 ################################################
 
 def main():
-    df = pd.read_csv("datasets/diabetes.csv")
+    df = pd.read_csv("Machine_Learning/datasets/diabetes.csv")
     X, y = diabetes_data_prep(df)
     base_models(X, y)
     best_models = hyperparameter_optimization(X, y)
