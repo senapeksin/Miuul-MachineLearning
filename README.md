@@ -56,4 +56,4 @@ Machine Learning
 - Creating a Telco Customer Abandonment Model
 - Customer Segmentation with Unsupervised Learning
 
-to access the lecture notes =>  Notlarım folder
+to access the lecture notes =>  Notes folder
