@@ -28,7 +28,6 @@ Python Programming for Data Science - Part 2
 ### Homework and Projects
 - Pandas Exercises ( Python_Programming > exercises > week_2.2.py)
 - Rule-Based Classification (Python_Programming > exercises > week_2.3.py)
-![](../../Desktop/Ekran Resmi 2022-08-14 01.30.34.png)
 
 ## Week - 3
 Feature Engineering 
@@ -41,7 +40,6 @@ Feature Engineering
 - Diabetes Data Feature Engineering (Feature_Engineering > projects > Diabetes_Feature_Engineering.ipynb)
 - Telco Customer Abandoned Feature Engineering (Feature_Engineering  > projects > Telco_Customer_Churn_Feature_Engineering.ipynb )
 
-![](../../Desktop/Ekran Resmi 2022-08-14 01.30.15.png)
 ## Week - 4
 Machine Learning  
 ### Topics
@@ -58,7 +56,5 @@ Machine Learning
 - Creating a House Price Prediction Model
 - Creating a Telco Customer Abandonment Model
 - Customer Segmentation with Unsupervised Learning
-
-![](../../Desktop/Ekran Resmi 2022-08-14 01.25.55.png)
 
 to access the lecture notes =>  Notes folder
