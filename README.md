@@ -26,8 +26,8 @@ Python Programming for Data Science - Part 2
 - Data Analysis with Python: Data Visualization
 - Data Analysis with Python: Advanced Functional Exploratory Data Analysis
 ### Homework and Projects
-- Pandas Exercises ( Python_Programming > exercises > week_2.2.py)
-- Rule-Based Classification (Python_Programming > exercises > week_2.3.py)
+- Pandas Exercises [link](https://github.com/senapeksin/Miuul-MachineLearning/blob/master/Python_Programming/exercises/week_2.2.py)
+- Rule-Based Classification  [link](https://github.com/senapeksin/Miuul-MachineLearning/blob/master/Python_Programming/exercises/week_2.3.ipynb)
 
 ## Week - 3
 Feature Engineering 
@@ -37,9 +37,8 @@ Feature Engineering
 - Encoding Scaling
 - Feature Extraction
 ### Homework and Projects
-- Diabetes Data Feature Engineering (Feature_Engineering > projects > Diabetes_Feature_Engineering.ipynb)
-- Telco Customer Abandoned Feature Engineering (Feature_Engineering  > projects > Telco_Customer_Churn_Feature_Engineering.ipynb )
-
+- Diabetes Data Feature Engineering [link](https://github.com/senapeksin/Miuul-MachineLearning/blob/master/Feature_Engineering/projects/Diabetes_Feature_Engineering.ipynb)
+- Telco Customer Abandoned Feature Engineering  [link](https://github.com/senapeksin/Miuul-MachineLearning/blob/master/Feature_Engineering/projects/Telco_Customer_Churn_Feature_Engineering.ipynb)
 ## Week - 4
 Machine Learning  
 ### Topics
